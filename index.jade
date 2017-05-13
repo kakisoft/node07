@@ -12,6 +12,13 @@ html
     p msg2 value is:#{msg2}...
     - var str = "hello";
     p #{str}
+    if form != null
+      -myname = form.myname
+      -mail = form.mail
+      -age = form.age
+      p= 'send:' + myname + ',' + mail + ',' + age
+    else
+      p= msg2
     form(method='post',action='/')
       table
         tr
@@ -30,4 +37,26 @@ html
           td &nbsp;
           td
             input(type='submit')
-    
+    hr
+    table
+      for item,index in datas
+        tr
+          case index % 3
+            when 0
+              tr(style='color:red')
+                td= index + 1
+                td= item.myname
+                td= item.mail
+                td= item.age
+            when 1
+              tr(style='color:green')
+                td= index + 1
+                td= item.myname
+                td= item.mail
+                td= item.age
+            when 2
+              tr(style='color:blue')            
+                td= index + 1
+                td= item.myname
+                td= item.mail
+                td= item.age

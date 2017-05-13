@@ -9,6 +9,8 @@ var jade = require('jade');
 var index = fs.readFileSync('./index.jade','utf8');
 var style = fs.readFileSync('./style.css','utf8');
 
+var datas = [];
+
 var server = http.createServer();
 server.on('request',doRequest);
 server.listen(PORT);
@@ -27,10 +29,12 @@ function doRequest(req, res){
                 });
                 req.on('end', function(){
                     var form = qs.parse(reqBody);
+                    datas.push(form);
                     var tmp = fn({
                         title:"Index Page",
                         msg2:"your data:",
-                        form:form
+                        form:form,
+                        datas:datas
                     });
                     res.setHeader('Content-Type','text/html');
                     res.write(tmp);
@@ -40,7 +44,9 @@ function doRequest(req, res){
                 var tmp = fn({
                     title:"Index Page",
                     msg:"enter your data:",
-                    form:{myname:'',mail:'',age:''}
+                    form:{myname:'',mail:'',age:''},
+                    //form:null,
+                    datas:datas
                 });
                 res.setHeader('Content-Type','text/html')
                 res.write(tmp);
