@@ -3,6 +3,7 @@ const PORT = 1337
 var http = require('http');
 var fs = require('fs');
 var url = require('url');
+var qs = require('querystring');
 var jade = require('jade');
 
 var index = fs.readFileSync('./index.jade','utf8');
@@ -20,21 +21,44 @@ function doRequest(req, res){
     switch(path.pathname){
         case '/':
             var fn = jade.compile(index);
-            var tmp = fn({
-                title:"Index Page",
-                msg:"this is test"
-            });
-            res.setHeader('Context-Type','text/html');
-            res.write(tmp);
-            res.end();
-            break;
 
-        case '/style.css': 
+            if(req.method == "POST"){
+                var reqBody = '';
+                req.on('data', function(data){
+                    reqBody += data;
+                });
+                req.on('end', function(){
+                    var form = qs.parse(reqBody);
+                    var tmp = fn({
+                        title:"Index Page",
+                        msg2:"your data:",
+                        form:form
+                    });
+                    res.setHeader('Content-Type','text/html');
+                    res.write(tmp);
+                    res.end();
+                });
+            }else{
+                var tmp = fn({
+                    title:"Index Page",
+                    msg:"enter your data:",
+                    form:{myname:'',mail:'',age:''}
+                });
+                res.setHeader('Content-Type','text/html')
+                res.write(tmp);
+                res.end();
+            }
+            break;
+            //ちゃんと末尾に break;書かないと、/style.cssあたりでエラー出て嵌った。
+            //  Error: Can't set headers after they are sent.
+            //    at ServerResponse.setHeader (_http_outgoing.js:371:11)
+
+        case '/style.css': //
             res.setHeader('Content-Type','text/css');
             res.write(style);
             res.end();
             break;
-        
+
         case '/favicon.ico':
             break;
 

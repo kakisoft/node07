@@ -4,6 +4,30 @@ html
     mega(charset="utf-8")
     title SamplePage
     link(rel="stylesheet",href="style.css")
+    //style(src="style.css")
   body
     h1= title
-    p= msg
+    p= msg1
+    p= msg2 + '(' + form.myname + ',' + form.mail + ',' + form.age + ')'
+    p msg2 value is:#{msg2}...
+    - var str = "hello";
+    p #{str}
+    form(method='post',action='/')
+      table
+        tr
+          td Name
+          td 
+            input(type='text', name='myname',value=form.myname)
+        tr
+          td mail
+          td
+            input(type='text', name='mail' ,value=form.mail)
+        tr
+          td age
+          td
+            input(type='text', name='age', value=form.age)
+        tr
+          td &nbsp;
+          td
+            input(type='submit')
+    
