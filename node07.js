@@ -9,8 +9,6 @@ var jade = require('jade');
 var index = fs.readFileSync('./index.jade','utf8');
 var style = fs.readFileSync('./style.css','utf8');
 
-var str = "str";
-
 var server = http.createServer();
 server.on('request',doRequest);
 server.listen(PORT);
